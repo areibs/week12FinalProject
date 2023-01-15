@@ -1,0 +1,19 @@
+.container {
+    background-color: lightgreen;
+}
+.new-album {
+    color:white;
+}
+
+#title {
+    color:black;
+    text-align: justify;
+
+
+}
+h2 {
+    text-align: center;
+}
+h4 {
+    text-align: center;
+}
