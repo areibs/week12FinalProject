@@ -35,7 +35,7 @@ class AlbumService {
 
     static updateAlbum(album) {
         return $.ajax({
-            url: this.url + `/${album._id}`,
+            url: this.url + `/${album.id}`,
             dataType: 'json',
             data: JSON.stringify(album),
             contentType: 'application/json',
@@ -65,6 +65,7 @@ class DOMManager {
             return AlbumService.getAllAlbums();
         })
         .then((albums) => this.render(albums));
+        console.log(albums);
     }
      static deleteAlbum(id) {
        AlbumService.deleteAlbum(id)
@@ -76,8 +77,9 @@ class DOMManager {
 
      static addSong(id) {
         for (let album of this.albums) {
-            if(album._id == id) {
-                album.songs.push(new Song($(`#${album._id}-song-name`).val(), $(`#${album._id}-song-artist`).val()));
+            console.log(album);
+            if(album.id == id) {
+                album.songs.push(new Song($(`#${album.id}-song-name`).val(), $(`#${album.id}-song-artist`).val()));
                 AlbumService.updateAlbum(album)
                 .then(() => {
                     return AlbumService.getAllAlbums();
@@ -90,9 +92,9 @@ class DOMManager {
 
      static deleteSong(albumId, songId) {
         for (let album of this.albums) {
-            if (album._id == albumId) {
+            if (album.id == albumId) {
                 for (let song of album.songs) {
-                    if (song._id == songId) {
+                    if (song.id == songId) {
                         album.songs.splice(album.songs.indexOf(song), 1);
                         AlbumService.updateAlbum(album)
                             .then(() => {
@@ -110,25 +112,27 @@ class DOMManager {
         this.albums = albums;
         $('#app').empty();
         for(let album of albums) {
+            console.log(album);
+            console.log(albums);
             $('#app').prepend(
-                `<div id="${album._id}" class="card">
+                `<div id="${album.id}" class="card">
                     <div class="card-header">
                         <h2>${album.name}</h2>
-                        <button class="btn btn-danger" onclick="DOMManager.deleteAlbum('${album._id}')"> Delete </button>
+                        <button class="btn btn-danger" onclick="DOMManager.deleteAlbum('${album.id}')"> Delete </button>
                     </div>
                     <div class="card-body">
                         <div class="card">
                             <div class="row">
                                 <div class="col-sm">
-                                    <input type="text" id="${album._id}-song-name" class="form-control" placeholder="Song Name">
+                                    <input type="text" id="${album.id}-song-name" class="form-control" placeholder="Song Name">
 
                                 </div>
                                 <div class="col-sm">
-                                    <input type="text" id="${album._id}-song-artist" class="form-control" placeholder="Song Artist">
+                                    <input type="text" id="${album.id}-song-artist" class="form-control" placeholder="Song Artist">
 
                                 </div>
                             </div>
-                            <button id="${album._id}-new-song" onclick="DOMManager.addSong('${album._id}')" class="btn btn-primary form-control"> Add</button>
+                            <button id="${album.id}-new-song" onclick="DOMManager.addSong('${album.id}')" class="btn btn-primary form-control"> Add</button>
                         </div>
 
                     </div>
@@ -136,11 +140,11 @@ class DOMManager {
 
             );
             for (let song of album.songs) {
-                $(`#${album._id}`).find('.card-body').append(
+                $(`#${album.id}`).find('.card-body').append(
                     `<p>
-                        <span id="name-${song._id}"><strong>Name: </strong> ${song.name}</span>
-                        <span id="artist-${song._id}"><strong>Artist: </strong> ${song.artist}</span>
-                        <button class="btn btn-danger" onclick="DOMManager.deleteSong('${album._id}', '${song._id}')">Delete Song</button>
+                        <span id="name-${song.id}"><strong>Name: </strong> ${song.name}</span>
+                        <span id="artist-${song.id}"><strong>Artist: </strong> ${song.artist}</span>
+                        <button class="btn btn-danger" onclick="DOMManager.deleteSong('${album.id}', '${song.id}')">Delete Song</button>
                     `
                 );
                 
@@ -155,7 +159,8 @@ class DOMManager {
             .then((data) => {
                 $('#app').empty();
                 for (let album of data) {
-                    let songs = AlbumService.getSongArtists(album._id);
+                    let songs = AlbumService.getSongArtists(album.
+                        id);
                 }
             })*/
 

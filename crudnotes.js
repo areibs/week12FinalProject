@@ -74,6 +74,7 @@ class DOMManager {
 
      static addRoom(id) {
         for (let house of this.houses) {
+            console.log(house);
             if(house._id == id) {
                 house.rooms.push(new Room($(`#${house._id}-room-name`).val(), $(`#${house._id}-room-area`).val()));
                 HouseService.updateHouse(house)
@@ -83,7 +84,9 @@ class DOMManager {
                 })
                 .then((houses) => this.render(houses));
             }
+            console.log(house.rooms);
         }
+        console.log(this.houses);
      }
 
      static deleteRoom(houseId, roomId) {
@@ -109,7 +112,7 @@ class DOMManager {
         $('#app').empty();
         for(let house of houses) {
             $('#app').prepend(
-                `<div id="${house.id}" class="card">
+                `<div id="${house._id}" class="card">
                     <div class="card-header">
                         <h2>${house.name}</h2>
                         <button class="btn btn-danger" onclick="DOMManager.deleteHouse('${house._id}')"> Delete </button>
@@ -134,6 +137,8 @@ class DOMManager {
 
             );
             for (let room of house.rooms) {
+                console.log(room);
+                console.log(house.rooms);
                 $(`#${house._id}`).find('.card-body').append(
                     `<p>
                         <span id="name-${room._id}"><strong>Name: </strong> ${room.name}</span>
